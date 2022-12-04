@@ -4,3 +4,4 @@ hopefully I don't forget to do them after the first day as usual.
 
 01 Python
 02 C++
+03 Haskell
