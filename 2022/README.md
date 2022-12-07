@@ -7,3 +7,4 @@ hopefully I don't forget to do them after the first day as usual.
 - 03 Haskell
 - 04 C
 - 05 Rust
+- 06 OCaml
