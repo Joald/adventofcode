@@ -8,3 +8,4 @@ hopefully I don't forget to do them after the first day as usual.
 - 04 C
 - 05 Rust
 - 06 OCaml
+- 07 Scala
