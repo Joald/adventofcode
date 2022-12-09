@@ -10,3 +10,4 @@ Hopefully I don't forget to do them after the first day as usual.
 - 06 OCaml
 - 07 Scala
 - 08 Java
+- 09 Kotlin
