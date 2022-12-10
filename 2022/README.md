@@ -11,3 +11,4 @@ Hopefully I don't forget to do them after the first day as usual.
 - 07 Scala
 - 08 Java
 - 09 Kotlin
+- 10 C#
