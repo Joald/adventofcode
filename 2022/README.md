@@ -14,3 +14,4 @@ Hopefully I don't forget to do them after the first day as usual.
 - 10 C#
 - 11 Go
 - 12 JavaScript
+- 13 TypeScript
