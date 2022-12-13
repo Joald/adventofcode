@@ -13,3 +13,4 @@ Hopefully I don't forget to do them after the first day as usual.
 - 09 Kotlin
 - 10 C#
 - 11 Go
+- 12 JavaScript
