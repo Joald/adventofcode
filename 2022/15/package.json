@@ -1,0 +1,6 @@
+{
+  "type": "module",
+  "devDependencies": {
+    "coffeescript": "^2.7.0"
+  }
+}
