@@ -18,3 +18,5 @@ Hopefully I don't forget to do them after the first day as usual.
 - 14 PHP
 - 15 CoffeeScript
 - 16 PureScript
+- 17 Dart
+- 18 
