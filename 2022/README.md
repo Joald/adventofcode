@@ -20,4 +20,5 @@ Hopefully I don't forget to do them after the first day as usual.
 - 16 PureScript
 - 17 Dart
 - 18 F#
-- 19
+- 19 Groovy
+- 20 Swift
