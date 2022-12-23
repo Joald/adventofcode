@@ -412,7 +412,7 @@ function part2(lines)
     tp[(0 + 1, i + 100 + 1, 4)] = (200 + 1, i + 1, 4)         # 6u -> 1d
     tp[(i + 1, 50 + 1, 3)] = (151 - i + 1, 1 + 1, 1)          # 5l -> 2l -
     tp[(i + 1, 151 + 1, 1)] = (151 - i + 1, 100 + 1, 3)       # 6r -> 3r -
-    tp[(51 + 1, 100 + i + 1, 2)] = (50 + i + 1, 100 + 1, 3)       # 6d -> 4r
+    tp[(51 + 1, 100 + i + 1, 2)] = (50 + i + 1, 100 + 1, 3)   # 6d -> 4r
     tp[(50 + i + 1, 50 + 1, 3)] = (101 + 1, i + 1, 2)         # 4l -> 2u
     tp[(50 + i + 1, 101 + 1, 1)] = (50 + 1, 100 + i + 1, 4)   # 4r -> 6d
     tp[(100 + 1, i + 1, 4)] = (50 + i + 1, 51 + 1, 1)         # 2u -> 4l
@@ -427,6 +427,9 @@ function part2(lines)
   pos = (2, findfirst(==('.'), lines[2]), 1)
 
   drawing = collect.(deepcopy(lines))
+
+  # interactive edge exploration:
+
   # drawing[pos[1]][pos[2]] = 'X'
   # println(join(map(l -> join(l, ""), drawing), "\n"))
   # drawing[pos[1]][pos[2]] = '.'
