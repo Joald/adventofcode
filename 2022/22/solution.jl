@@ -402,7 +402,7 @@ function part2(lines)
   movement = parseMovement(lines[length(lines)])
   lines = lines[1:length(lines)-2]
   w = maximum(length, lines)
-  padding = " "^w
+  padding = " "^(w + 2)
   lines = map(s -> ' ' * s * ' ' * ' '^(w - length(s)), lines)
   push!(lines, padding)
   pushfirst!(lines, padding)
@@ -412,7 +412,7 @@ function part2(lines)
     tp[(0 + 1, i + 100 + 1, 4)] = (200 + 1, i + 1, 4)         # 6u -> 1d
     tp[(i + 1, 50 + 1, 3)] = (151 - i + 1, 1 + 1, 1)          # 5l -> 2l -
     tp[(i + 1, 151 + 1, 1)] = (151 - i + 1, 100 + 1, 3)       # 6r -> 3r -
-    tp[(51 + 1, 100 + i, 2)] = (50 + i + 1, 100 + 1, 3)       # 6d -> 4r
+    tp[(51 + 1, 100 + i + 1, 2)] = (50 + i + 1, 100 + 1, 3)       # 6d -> 4r
     tp[(50 + i + 1, 50 + 1, 3)] = (101 + 1, i + 1, 2)         # 4l -> 2u
     tp[(50 + i + 1, 101 + 1, 1)] = (50 + 1, 100 + i + 1, 4)   # 4r -> 6d
     tp[(100 + 1, i + 1, 4)] = (50 + i + 1, 51 + 1, 1)         # 2u -> 4l
@@ -453,6 +453,7 @@ function part2(lines)
   #     pos = tp[pos]
   #   end
 
+  #   display(pos)
   #   bkp = drawing[x][y]
   #   drawing[x][y] = 'X'
   #   println(join(map(l -> join(l, ""), drawing), "\n"))
@@ -503,10 +504,6 @@ function part2(lines)
   (pos, (res=(x - 1) * 1000 + (y - 1) * 4 + (dir - 1),))
 end
 
-# cheat
-# x = 130, y = 17, dir = 0, res = 130068
-# TODO: actually fix the bug
-
 teststr = """
         ...#
         .#..
@@ -533,3 +530,4 @@ print(part2(lines))
 
 # part 2 1st try 75304 (too low)
 # part 2 2nd try (188, 37, 2), (res = 187145,) (high)
+# part 3 3rd try (131, 18, 1), (res = 130068,)
