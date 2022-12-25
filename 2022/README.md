@@ -24,6 +24,6 @@ Hopefully I don't forget to do them after the first day as usual.
 - 20 Swift
 - 21 Vim (+ part1 Haskell, part2 Prolog)
 - 22 Julia
-- 23 
+- 23 Ada
 - 24
 - 25
