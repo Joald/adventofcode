@@ -1,5 +1,5 @@
 -module(solution).
--export([main/0, parse_snafu/1, part1/1, print_snafu/1]).
+-export([main/0, parse_snafu/1, part1/1, print_snafu/1, tests/0]).
 
 parse_snafu([], Acc) -> Acc;
 parse_snafu([D|Rest], Acc) -> 
