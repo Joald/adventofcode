@@ -1,8 +1,8 @@
-const DEBUG: bool = false;
+pub const DEBUG: bool = false;
 
 macro_rules! dprintln {
     ($($arg:expr),+) => {
-        if DEBUG {
+        if crate::dbg::DEBUG {
             eprintln!($($arg),*);
         }
     };

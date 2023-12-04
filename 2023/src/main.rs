@@ -2,14 +2,15 @@ mod dbg;
 mod exs;
 mod generic;
 mod old;
+mod t4;
 
 use crate::generic::*;
 use anyhow::Result;
 
 fn main() -> Result<()> {
-    const TASK_NUM: usize = 3;
+    const TASK_NUM: usize = 4;
     const PART: usize = 2;
-    const EXAMPLE: bool = true;
+    const EXAMPLE: bool = false;
     println!(
         "{}",
         solve(
