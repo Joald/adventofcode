@@ -1,6 +1,6 @@
 use crate::dbg::dprintln;
 use itertools::Itertools;
-use std::fmt::{Debug, Formatter, Pointer, Write};
+use std::fmt::{Debug, Formatter};
 
 #[derive(Ord, PartialOrd, Eq, PartialEq)]
 struct Repl {
@@ -19,10 +19,6 @@ impl Debug for Repl {
     }
 }
 
-fn is_in(x: i64, l: i64, r: i64) -> bool {
-    x.clamp(l, r) == x
-}
-
 fn mkrn(first: i64, last: i64) -> Range {
     Range {
         start: first,
@@ -38,9 +34,6 @@ impl Repl {
         self.src_end() - 1
     }
 
-    fn dest_last(&self) -> i64 {
-        self.dest_start + self.len - 1
-    }
     fn get(&self, x: i64) -> Option<i64> {
         if x >= self.src_start && x < self.src_start + self.len {
             // dprintln!(
@@ -123,14 +116,6 @@ impl Repl {
             len: self.len,
         }
     }
-    fn covers(&self, r: Range) -> bool {
-        self.input_range().covers(r)
-    }
-
-    fn is_earlier_than(&self, r: Range) -> bool {
-        self.src_last() < r.start
-    }
-
     fn scoped_to(&self, r: Range) -> Repl {
         let src_start = self.src_start.max(r.start);
         let src_last = self.src_last().min(r.last());
@@ -180,38 +165,12 @@ impl Tbl {
                             .flat_map(|range| repl.get_range(range).into_iter())
                             .collect();
                     }
-                    prev.into_iter().map(|(r, b)| r)
+                    prev.into_iter().map(|(r, _)| r)
                 })
                 .collect(),
         };
         // dprintln!("{:?} -> {:?} via {:?}", rs.clone(), res, self);
         res
-        // let mut ti = 0usize;
-        // let n = self.repls.len();
-        // let mut res = Ranges { rs: Vec::new() };
-        // for mut range in rs.rs.into_iter() {
-        //     // dprintln!("")
-        //     if ti >= n {
-        //         break;
-        //     }
-        //     while self.repls[ti].is_earlier_than(range) {
-        //         ti += 1;
-        //         if ti >= n {
-        //             break;
-        //         }
-        //     }
-        //     while self.repls[ti].covers(range) {
-        //         let r = &self.repls[ti];
-        //         let to_insert = r.scoped_to(range).output_range();
-        //         dprintln!("{:?} -> {:?}", r, to_insert);
-        //         res.insert(to_insert, false);
-        //         ti += 1;
-        //         if ti >= n {
-        //             break;
-        //         }
-        //     }
-        // }
-        // res.sorted()
     }
 }
 
@@ -249,26 +208,6 @@ impl Range {
             })
         }
     }
-
-    fn covers(&self, other: Range) -> bool {
-        is_in(other.start, self.start, self.last())
-            || is_in(other.last(), self.start, self.last())
-            || is_in(self.start, other.start, other.last())
-            || is_in(self.last(), other.start, other.last())
-    }
-    fn is_adjacent_to(&self, other: Range) -> bool {
-        self.start - 1 == other.last() || self.last() + 1 == other.start
-    }
-    fn prefix_of(&self, other: Range) -> Option<Range> {
-        if self.start < other.start {
-            Some(Range {
-                start: self.start,
-                len: other.start - self.start + 1,
-            })
-        } else {
-            None
-        }
-    }
 }
 
 #[derive(Debug, Clone)]
@@ -286,7 +225,7 @@ impl Ranges {
 }
 
 fn parse_5(lines: Vec<String>) -> (Vec<i64>, Vec<Tbl>) {
-    let mut init_seeds: Vec<_> = lines
+    let init_seeds: Vec<_> = lines
         .iter()
         .take(1)
         .next()

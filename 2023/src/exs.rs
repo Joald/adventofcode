@@ -81,3 +81,65 @@ humidity-to-location map:
 60 56 37
 56 93 4"
 }
+
+pub fn ex_input_6() -> &'static str {
+    "Time:      7  15   30
+Distance:  9  40  200"
+}
+pub fn ex_input_7() -> &'static str {
+    ""
+}
+pub fn ex_input_8() -> &'static str {
+    ""
+}
+pub fn ex_input_9() -> &'static str {
+    ""
+}
+pub fn ex_input_10() -> &'static str {
+    ""
+}
+pub fn ex_input_11() -> &'static str {
+    ""
+}
+pub fn ex_input_12() -> &'static str {
+    ""
+}
+pub fn ex_input_13() -> &'static str {
+    ""
+}
+pub fn ex_input_14() -> &'static str {
+    ""
+}
+pub fn ex_input_15() -> &'static str {
+    ""
+}
+pub fn ex_input_16() -> &'static str {
+    ""
+}
+pub fn ex_input_17() -> &'static str {
+    ""
+}
+pub fn ex_input_18() -> &'static str {
+    ""
+}
+pub fn ex_input_19() -> &'static str {
+    ""
+}
+pub fn ex_input_20() -> &'static str {
+    ""
+}
+pub fn ex_input_21() -> &'static str {
+    ""
+}
+pub fn ex_input_22() -> &'static str {
+    ""
+}
+pub fn ex_input_23() -> &'static str {
+    ""
+}
+pub fn ex_input_24() -> &'static str {
+    ""
+}
+pub fn ex_input_25() -> &'static str {
+    ""
+}
