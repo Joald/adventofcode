@@ -1,4 +1,4 @@
-pub const DEBUG: bool = false;
+pub const DEBUG: bool = true;
 
 macro_rules! dprintln {
     ($($arg:expr),+) => {

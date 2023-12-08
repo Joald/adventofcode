@@ -87,7 +87,11 @@ pub fn ex_input_6() -> &'static str {
 Distance:  9  40  200"
 }
 pub fn ex_input_7() -> &'static str {
-    ""
+    "32T3K 765
+T55J5 684
+KK677 28
+KTJJT 220
+QQQJA 483"
 }
 pub fn ex_input_8() -> &'static str {
     ""

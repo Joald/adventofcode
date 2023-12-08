@@ -30,8 +30,8 @@ use anyhow::Result;
 
 fn main() -> Result<()> {
     const TASK_NUM: usize = 7;
-    const PART: usize = 1;
-    const EXAMPLE: bool = true;
+    const PART: usize = 2;
+    const EXAMPLE: bool = false;
     println!(
         "{}",
         solve(
