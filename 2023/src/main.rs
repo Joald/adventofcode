@@ -29,7 +29,7 @@ use crate::generic::*;
 use anyhow::Result;
 
 fn main() -> Result<()> {
-    const TASK_NUM: usize = 7;
+    const TASK_NUM: usize = 8;
     const PART: usize = 2;
     const EXAMPLE: bool = false;
     println!(
@@ -46,3 +46,5 @@ fn main() -> Result<()> {
     );
     Ok(())
 }
+
+// guess 11678319315860 too high

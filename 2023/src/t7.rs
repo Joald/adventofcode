@@ -23,7 +23,7 @@ fn parse_set(part: i64, hand: &[i64]) -> Set {
     };
     let count_of_exist_with_cnt = |num| {
         hand.iter()
-            .filter(|card| hand.iter().filter(|other| *other == *card).count() == 2)
+            .filter(|card| hand.iter().filter(|other| *other == *card).count() == num)
             .count()
     };
     if part == 1 {
