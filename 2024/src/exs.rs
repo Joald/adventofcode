@@ -26,7 +26,16 @@ pub fn ex_input_3_2() -> &'static str {
 
 #[allow(unused)]
 pub fn ex_input_4() -> &'static str {
-    ""
+    "MMMSXXMASM
+MSAMXMSMSA
+AMXSXMAAMM
+MSAMASMSMX
+XMASAMXAMM
+XXAMMXXAMA
+SMSMSASXSS
+SAXAMASAAA
+MAMMMXMMMM
+MXMXAXMASX"
 }
 #[allow(unused)]
 pub fn ex_input_5() -> &'static str {
