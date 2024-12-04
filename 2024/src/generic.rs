@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use crate::exs::*;
 use crate::t01::solve_01;
 use crate::t02::solve_02;
@@ -25,17 +27,15 @@ use crate::t23::solve_23;
 use crate::t24::solve_24;
 use crate::t25::solve_25;
 
-pub fn read_input(task_num: usize) -> anyhow::Result<Vec<String>> {
-    Ok(
-        std::fs::read_to_string(format!("tasks/{:0>2}/input.txt", task_num))?
-            .split("\n")
-            .map(str::to_owned)
-            .filter(|l| !l.is_empty())
-            .collect(),
-    )
+pub fn read_input(task_num: usize) -> anyhow::Result<String> {
+    let mut contents = std::fs::read_to_string(format!("tasks/{:0>2}/input.txt", task_num))?;
+    if contents.ends_with("\n") {
+        contents.pop();
+    }
+    Ok(contents)
 }
 
-pub fn ex_input(task_num: usize, part: usize) -> Vec<String> {
+pub fn ex_input(task_num: usize, part: usize) -> String {
     let inps = [
         vec![ex_input_1()],
         vec![ex_input_2()],
@@ -65,17 +65,46 @@ pub fn ex_input(task_num: usize, part: usize) -> Vec<String> {
     ];
 
     let t = &inps[task_num - 1];
-    if t.len() > 1 { t[part - 1] } else { t[0] }
-        .split("\n")
-        .map(str::to_owned)
-        .collect()
+    let mut input = if t.len() > 1 { t[part - 1] } else { t[0] }.to_string();
+    if input.ends_with("\n") {
+        input.pop();
+    }
+    input
 }
 
-pub fn solve(task_num: usize, part: usize, lines: Vec<String>) -> i64 {
+pub fn solve(task_num: usize, part: usize, input: String) -> i64 {
     let tasks = [
         solve_01, solve_02, solve_03, solve_04, solve_05, solve_06, solve_07, solve_08, solve_09,
         solve_10, solve_11, solve_12, solve_13, solve_14, solve_15, solve_16, solve_17, solve_18,
         solve_19, solve_20, solve_21, solve_22, solve_23, solve_24, solve_25,
     ];
-    tasks[task_num - 1](part, lines)
+    tasks[task_num - 1](part, input)
+}
+
+pub trait InputParser {
+    type Res;
+    fn parse(input: String) -> Self::Res;
+}
+
+pub struct Lines {}
+impl InputParser for Lines {
+    type Res = Vec<String>;
+    fn parse(input: String) -> Vec<String> {
+        input.split("\n").map(str::to_owned).collect()
+    }
+}
+
+pub struct Coords {}
+impl InputParser for Coords {
+    type Res = HashMap<i64, HashMap<i64, char>>;
+    fn parse(input: String) -> Self::Res {
+        Lines::parse(input)
+            .iter()
+            .enumerate()
+            .map(|(x, l)| {
+                let row = l.chars().enumerate().map(|(y, c)| (y as i64, c)).collect();
+                (x as i64, row)
+            })
+            .collect()
+    }
 }

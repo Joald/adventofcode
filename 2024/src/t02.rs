@@ -1,4 +1,4 @@
-use itertools::Itertools;
+use crate::prelude::*;
 
 fn gen_missings(mut v: Vec<i64>) -> Vec<Vec<i64>> {
     let mut result = Vec::new();
@@ -14,7 +14,8 @@ fn gen_missings(mut v: Vec<i64>) -> Vec<Vec<i64>> {
 }
 
 #[allow(unused)]
-pub fn solve_02(part: usize, lines: Vec<String>) -> i64 {
+pub fn solve_02(part: usize, input: String) -> i64 {
+    let lines = Lines::parse(input);
     //dbg!(&lines);
     let v: Vec<Vec<_>> = lines
         .iter()

@@ -1,7 +1,8 @@
-use std::collections::HashMap;
+use crate::prelude::*;
 
 #[allow(unused)]
-pub fn solve_01(part: usize, lines: Vec<String>) -> i64 {
+pub fn solve_01(part: usize, input: String) -> i64 {
+    let lines = Lines::parse(input);
     dbg!(&lines);
     let (mut l, mut r): (Vec<i64>, Vec<i64>) = lines.iter().map(|l| {
         let p: Vec<i64> = l.split_whitespace().map(|x|x.parse().unwrap()).collect();

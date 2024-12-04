@@ -1,6 +1,7 @@
 mod dbg;
 mod exs;
 mod generic;
+mod prelude;
 mod t01;
 mod t02;
 mod t03;

@@ -1,7 +1,8 @@
-use regex::Regex;
+use crate::prelude::*;
 
 #[allow(unused)]
-pub fn solve_03(part: usize, lines: Vec<String>) -> i64 {
+pub fn solve_03(part: usize, input: String) -> i64 {
+    let lines = Lines::parse(input);
     let mut sum = 0;
     let mut mult = 1;
 
