@@ -94,9 +94,10 @@ impl InputParser for Lines {
     }
 }
 
+pub type CoordsResult = HashMap<i64, HashMap<i64, char>>;
 pub struct Coords {}
 impl InputParser for Coords {
-    type Res = HashMap<i64, HashMap<i64, char>>;
+    type Res = CoordsResult;
     fn parse(input: String) -> Self::Res {
         Lines::parse(input)
             .iter()
@@ -108,3 +109,4 @@ impl InputParser for Coords {
             .collect()
     }
 }
+
