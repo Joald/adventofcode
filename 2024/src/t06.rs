@@ -27,6 +27,10 @@ fn was_looped(
         {
             return true;
         }
+        if !coords.contains_key(&nx) || !coords[&nx].contains_key(&ny) {
+            dbg!(sx, sy, dirx, diry, nx, ny, h, w);
+            println!("coord={:?}\nvis={:?}",&coords, &vis);
+        }
         let c = coords[&nx][&ny];
         if c == '#' {
             next_dir!();
