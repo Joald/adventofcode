@@ -32,7 +32,6 @@ pub fn solve_02(part: usize, input: String) -> i64 {
                         break;
                     }
                 } else {
-                    let iter_limit = count_digits(i);
                     let mut upper = upper;
                     let found = loop {
                         let part = upper % pivot;

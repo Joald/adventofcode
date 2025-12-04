@@ -101,3 +101,26 @@ pub fn count_digits(mut x: i64) -> i64 {
     }
     cnt
 }
+pub enum NeiDirs {
+    BaseFour,
+    Omni,
+}
+
+pub fn neis(x: i64, y: i64, coords: &CoordsResult, nei_dirs: NeiDirs) -> Vec<(i64, i64, char)> {
+    let mut result = Vec::new();
+    let base_four = [(-1, 0), (1, 0), (0, -1), (0, 1)];
+    let omni = [(-1, -1), (-1, 1), (1, -1), (1, 1)];
+    let iter: Box<dyn Iterator<Item = (i64, i64)>> = match nei_dirs {
+        NeiDirs::BaseFour => Box::new(base_four.into_iter()),
+        NeiDirs::Omni => Box::new(base_four.into_iter().chain(omni.into_iter())),
+    };
+    for (xdelta, ydelta) in iter {
+        let (xi, yi) = (x + xdelta, y + ydelta);
+        coords.get(&xi).inspect(|col| {
+            col.get(&yi).inspect(|val| {
+                result.push((xi, yi, **val));
+            });
+        });
+    }
+    result
+}
