@@ -1,3 +1,5 @@
+use anyhow::Context;
+use core::panic;
 use std::collections::HashMap;
 
 use crate::exs::*;
@@ -13,22 +15,11 @@ use crate::t09::solve_09;
 use crate::t10::solve_10;
 use crate::t11::solve_11;
 use crate::t12::solve_12;
-use crate::t13::solve_13;
-use crate::t14::solve_14;
-use crate::t15::solve_15;
-use crate::t16::solve_16;
-use crate::t17::solve_17;
-use crate::t18::solve_18;
-use crate::t19::solve_19;
-use crate::t20::solve_20;
-use crate::t21::solve_21;
-use crate::t22::solve_22;
-use crate::t23::solve_23;
-use crate::t24::solve_24;
-use crate::t25::solve_25;
 
 pub fn read_input(task_num: usize) -> anyhow::Result<String> {
-    let mut contents = std::fs::read_to_string(format!("tasks/{:0>2}/input.txt", task_num))?;
+    let path = format!("tasks/{:0>2}/input.txt", task_num);
+    let mut contents = std::fs::read_to_string(path.clone())
+        .with_context(|| format!("Reading input from {path}"))?;
     if contents.ends_with("\n") {
         contents.pop();
     }
@@ -39,7 +30,7 @@ pub fn ex_input(task_num: usize, part: usize) -> String {
     let inps = [
         vec![ex_input_1()],
         vec![ex_input_2()],
-        vec![ex_input_3_1(), ex_input_3_2()],
+        vec![ex_input_3()],
         vec![ex_input_4()],
         vec![ex_input_5()],
         vec![ex_input_6()],
@@ -49,19 +40,6 @@ pub fn ex_input(task_num: usize, part: usize) -> String {
         vec![ex_input_10()],
         vec![ex_input_11()],
         vec![ex_input_12()],
-        vec![ex_input_13()],
-        vec![ex_input_14()],
-        vec![ex_input_15()],
-        vec![ex_input_16()],
-        vec![ex_input_17()],
-        vec![ex_input_18()],
-        vec![ex_input_19()],
-        vec![ex_input_20()],
-        vec![ex_input_21()],
-        vec![ex_input_22()],
-        vec![ex_input_23()],
-        vec![ex_input_24()],
-        vec![ex_input_25()],
     ];
 
     let t = &inps[task_num - 1];
@@ -75,8 +53,7 @@ pub fn ex_input(task_num: usize, part: usize) -> String {
 pub fn solve(task_num: usize, part: usize, input: String) -> i64 {
     let tasks = [
         solve_01, solve_02, solve_03, solve_04, solve_05, solve_06, solve_07, solve_08, solve_09,
-        solve_10, solve_11, solve_12, solve_13, solve_14, solve_15, solve_16, solve_17, solve_18,
-        solve_19, solve_20, solve_21, solve_22, solve_23, solve_24, solve_25,
+        solve_10, solve_11, solve_12,
     ];
     tasks[task_num - 1](part, input)
 }
@@ -110,3 +87,17 @@ impl InputParser for Coords {
     }
 }
 
+pub fn count_digits(mut x: i64) -> i64 {
+    if x < 0 {
+        panic!("Refusing to count digits of a negative number {x}");
+    }
+    if x == 0 {
+        return 1;
+    }
+    let mut cnt = 0;
+    while x != 0 {
+        cnt += 1;
+        x /= 10;
+    }
+    cnt
+}

@@ -1,24 +1,38 @@
 use crate::prelude::*;
 
+const MOD: i64 = 100;
+
+fn md(x: i64) -> i64 {
+    let fake_mod = x % MOD;
+    if fake_mod < 0 {
+        fake_mod + MOD
+    } else {
+        fake_mod
+    }
+}
 #[allow(unused)]
 pub fn solve_01(part: usize, input: String) -> i64 {
     let lines = Lines::parse(input);
-    dbg!(&lines);
-    let (mut l, mut r): (Vec<i64>, Vec<i64>) = lines.iter().map(|l| {
-        let p: Vec<i64> = l.split_whitespace().map(|x|x.parse().unwrap()).collect();
-        (p[0], p[1])
-    }).unzip();
-
-    if part == 1{
-        l.sort();
-        r.sort();
-
-        l.iter().zip(r).map(|(x, y)| (x-y).abs()).sum()
-    } else {
-        let mut rs = HashMap::new();
-        for x in r {
-            *rs.entry(x).or_insert(0) += 1;
+    let mut pos = 50;
+    let mut cnt = 0;
+    for line in lines {
+        let (dir, val) = line.split_at(1);
+        let mut val = val.parse::<i64>().unwrap();
+        for i in 0..val {
+            if dir == "L" {
+                pos -= 1;
+            } else {
+                pos += 1;
+            }
+            pos = md(pos);
+            if part == 2 && pos == 0 {
+                cnt += 1;
+            }
         }
-        l.iter().map(|k| k * rs.get(k).unwrap_or(&0)).sum()
-    }    
+        if part == 1 && pos == 0 {
+            cnt += 1;
+        }
+    }
+
+    cnt
 }

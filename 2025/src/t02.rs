@@ -1,46 +1,57 @@
 use crate::prelude::*;
 
-fn gen_missings(mut v: Vec<i64>) -> Vec<Vec<i64>> {
-    let mut result = Vec::new();
-    result.push(v.clone());
-    let mut rmd = v.pop().unwrap();
-    for i in (0..v.len()).rev() {
-        result.push(v.clone());
-        std::mem::swap(&mut rmd, v.get_mut(i).unwrap());
-    }
-    result.push(v);
-    //dbg!(&result);
-    result
-}
-
 #[allow(unused)]
 pub fn solve_02(part: usize, input: String) -> i64 {
-    let lines = Lines::parse(input);
-    //dbg!(&lines);
-    let v: Vec<Vec<_>> = lines
-        .iter()
-        .map(|l| {
-            l.split_whitespace()
-                .map(|tok| tok.parse::<i64>().unwrap())
-                .collect()
+    let ranges = input
+        .trim()
+        .split(",")
+        .map(|range| {
+            let (beg, end) = range.split_once("-").unwrap();
+            (
+                beg.trim().parse::<i64>().unwrap(),
+                end.trim().parse::<i64>().unwrap(),
+            )
         })
-        .collect();
+        .collect_vec();
 
-    v.into_iter()
-        .map(|report_orig| {
-            if part == 1 {
-                vec![report_orig.clone()]
-            } else {
-                gen_missings(report_orig)
+    let mut cnt = 0;
+    for (beg, end) in ranges {
+        for i in beg..end + 1 {
+            let mut pivot = 1;
+            let mut lower = 0;
+            let mut found = false;
+            // invariant: lower = i mod pivot
+            while i / (pivot * 10) > 0 {
+                pivot *= 10;
+                lower = i % pivot;
+                let upper = i / pivot;
+                let pivot_size = count_digits(pivot) - 1;
+                if part == 1 {
+                    if upper == lower && count_digits(lower) == pivot_size {
+                        cnt += i;
+                        break;
+                    }
+                } else {
+                    let iter_limit = count_digits(i);
+                    let mut upper = upper;
+                    let found = loop {
+                        let part = upper % pivot;
+                        if upper == 0 {
+                            dbg!(i, upper, lower, pivot, part);
+                            break true;
+                        }
+                        if part != lower || count_digits(part) != pivot_size {
+                            break false;
+                        }
+                        upper /= pivot;
+                    };
+                    if found {
+                        cnt += i;
+                        break;
+                    }
+                }
             }
-            .iter()
-            .any(|report| {
-                ((report.is_sorted() || report.is_sorted_by_key(|x| -x))
-                    && report.iter().zip(report.iter().dropping(1)).all(|(l, r)| {
-                        let diff = (l - r).abs();
-                        (1..=3).contains(&diff)
-                    }))
-            }) as i64
-        })
-        .sum()
+        }
+    }
+    cnt
 }

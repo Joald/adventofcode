@@ -14,19 +14,6 @@ mod t09;
 mod t10;
 mod t11;
 mod t12;
-mod t13;
-mod t14;
-mod t15;
-mod t16;
-mod t17;
-mod t18;
-mod t19;
-mod t20;
-mod t21;
-mod t22;
-mod t23;
-mod t24;
-mod t25;
 
 use crate::generic::*;
 
