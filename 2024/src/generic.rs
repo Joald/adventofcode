@@ -1,5 +1,3 @@
-use std::collections::HashMap;
-
 use crate::exs::*;
 use crate::t01::solve_01;
 use crate::t02::solve_02;
@@ -80,33 +78,3 @@ pub fn solve(task_num: usize, part: usize, input: String) -> i64 {
     ];
     tasks[task_num - 1](part, input)
 }
-
-pub trait InputParser {
-    type Res;
-    fn parse(input: String) -> Self::Res;
-}
-
-pub struct Lines {}
-impl InputParser for Lines {
-    type Res = Vec<String>;
-    fn parse(input: String) -> Vec<String> {
-        input.split("\n").map(str::to_owned).collect()
-    }
-}
-
-pub type CoordsResult = HashMap<i64, HashMap<i64, char>>;
-pub struct Coords {}
-impl InputParser for Coords {
-    type Res = CoordsResult;
-    fn parse(input: String) -> Self::Res {
-        Lines::parse(input)
-            .iter()
-            .enumerate()
-            .map(|(x, l)| {
-                let row = l.chars().enumerate().map(|(y, c)| (y as i64, c)).collect();
-                (x as i64, row)
-            })
-            .collect()
-    }
-}
-

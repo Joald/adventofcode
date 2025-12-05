@@ -22,12 +22,17 @@ name = "aoc25"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "aoc_common",
  "colored",
  "divisors",
  "itertools",
  "num 0.4.3",
  "regex",
 ]
+
+[[package]]
+name = "aoc_common"
+version = "0.1.0"
 
 [[package]]
 name = "autocfg"

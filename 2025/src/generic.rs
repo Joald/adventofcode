@@ -1,6 +1,4 @@
 use anyhow::Context;
-use core::panic;
-use std::collections::HashMap;
 
 use crate::exs::*;
 use crate::t01::solve_01;
@@ -56,71 +54,4 @@ pub fn solve(task_num: usize, part: usize, input: String) -> i64 {
         solve_10, solve_11, solve_12,
     ];
     tasks[task_num - 1](part, input)
-}
-
-pub trait InputParser {
-    type Res;
-    fn parse(input: String) -> Self::Res;
-}
-
-pub struct Lines {}
-impl InputParser for Lines {
-    type Res = Vec<String>;
-    fn parse(input: String) -> Vec<String> {
-        input.split("\n").map(str::to_owned).collect()
-    }
-}
-
-pub type CoordsResult = HashMap<i64, HashMap<i64, char>>;
-pub struct Coords {}
-impl InputParser for Coords {
-    type Res = CoordsResult;
-    fn parse(input: String) -> Self::Res {
-        Lines::parse(input)
-            .iter()
-            .enumerate()
-            .map(|(x, l)| {
-                let row = l.chars().enumerate().map(|(y, c)| (y as i64, c)).collect();
-                (x as i64, row)
-            })
-            .collect()
-    }
-}
-
-pub fn count_digits(mut x: i64) -> i64 {
-    if x < 0 {
-        panic!("Refusing to count digits of a negative number {x}");
-    }
-    if x == 0 {
-        return 1;
-    }
-    let mut cnt = 0;
-    while x != 0 {
-        cnt += 1;
-        x /= 10;
-    }
-    cnt
-}
-pub enum NeiDirs {
-    BaseFour,
-    Omni,
-}
-
-pub fn neis(x: i64, y: i64, coords: &CoordsResult, nei_dirs: NeiDirs) -> Vec<(i64, i64, char)> {
-    let mut result = Vec::new();
-    let base_four = [(-1, 0), (1, 0), (0, -1), (0, 1)];
-    let omni = [(-1, -1), (-1, 1), (1, -1), (1, 1)];
-    let iter: Box<dyn Iterator<Item = (i64, i64)>> = match nei_dirs {
-        NeiDirs::BaseFour => Box::new(base_four.into_iter()),
-        NeiDirs::Omni => Box::new(base_four.into_iter().chain(omni.into_iter())),
-    };
-    for (xdelta, ydelta) in iter {
-        let (xi, yi) = (x + xdelta, y + ydelta);
-        coords.get(&xi).inspect(|col| {
-            col.get(&yi).inspect(|val| {
-                result.push((xi, yi, **val));
-            });
-        });
-    }
-    result
 }
