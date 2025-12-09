@@ -62,7 +62,7 @@ pub fn solve_08(part: usize, input: String) -> i64 {
         .take(if part == 1 {
             if is_example() { 10 } else { 1000 }
         } else {
-            usize::max_value()
+            usize::MAX
         })
     {
         println!("merging {x} ({:?}) with {y} ({:?})", lines[x], lines[y]);
