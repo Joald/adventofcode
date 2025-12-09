@@ -105,7 +105,14 @@ pub fn ex_input_8() -> &'static str {
 }
 #[allow(unused)]
 pub fn ex_input_9() -> &'static str {
-    ""
+    "7,1
+11,1
+11,7
+9,7
+9,5
+2,5
+2,3
+7,3"
 }
 #[allow(unused)]
 pub fn ex_input_10() -> &'static str {
