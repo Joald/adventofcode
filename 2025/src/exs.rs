@@ -121,8 +121,33 @@ pub fn ex_input_10() -> &'static str {
 [.###.#] (0,1,2,3,4) (0,3,4) (0,1,2,4,5) (1,2) {10,11,11,5,10,5}"
 }
 #[allow(unused)]
-pub fn ex_input_11() -> &'static str {
-    ""
+pub fn ex_input_11_1() -> &'static str {
+    "aaa: you hhh
+you: bbb ccc
+bbb: ddd eee
+ccc: ddd eee fff
+ddd: ggg
+eee: out
+fff: out
+ggg: out
+hhh: ccc fff iii
+iii: out"
+}
+#[allow(unused)]
+pub fn ex_input_11_2() -> &'static str {
+    "svr: aaa bbb
+aaa: fft
+fft: ccc
+bbb: tty
+tty: ccc
+ccc: ddd eee
+ddd: hub
+hub: fff
+eee: dac
+dac: fff
+fff: ggg hhh
+ggg: out
+hhh: out"
 }
 #[allow(unused)]
 pub fn ex_input_12() -> &'static str {

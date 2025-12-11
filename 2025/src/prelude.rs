@@ -8,3 +8,5 @@ pub use regex::Regex;
 pub use std::collections::HashMap;
 #[allow(unused)]
 pub use std::collections::HashSet;
+#[allow(unused)]
+pub use indicatif::ProgressIterator;

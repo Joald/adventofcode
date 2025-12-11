@@ -36,7 +36,7 @@ pub fn ex_input(task_num: usize, part: usize) -> String {
         vec![ex_input_8()],
         vec![ex_input_9()],
         vec![ex_input_10()],
-        vec![ex_input_11()],
+        vec![ex_input_11_1(), ex_input_11_2()],
         vec![ex_input_12()],
     ];
 
