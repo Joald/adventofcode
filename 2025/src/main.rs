@@ -17,12 +17,7 @@ mod t12;
 
 use crate::generic::*;
 
-fn var_or(var: &str, or: &str) -> usize {
-    std::env::var(var)
-        .unwrap_or(or.to_string())
-        .parse::<usize>()
-        .unwrap()
-}
+use aoc_common::var_or;
 
 fn main() -> anyhow::Result<()> {
     let task_num: usize = var_or("TASK_NUM", "3");

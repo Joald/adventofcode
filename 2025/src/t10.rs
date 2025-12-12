@@ -37,18 +37,33 @@ pub fn solve_10(part: usize, input: String) -> i64 {
         .map(|(i, (diagram, buttons, joltages))| {
             assert!(diagram.len() == joltages.len());
             println!(
-                "Considering line {}: {:?} with {} buttons",
+                "Considering line {}: {:?} with {} buttons {buttons:?}",
                 i + 1,
                 joltages,
                 buttons.len()
             );
+            if let Some(cached_result) = get_cached_line_result(i + 1) {
+                return cached_result;
+            }
 
-            let mut possibilities: Vec<Vec<usize>> = vec![vec![0; buttons.len()]];
+            if var_or("PARTITIONS", "0") == 1 {
+                let mut possibilities: Vec<Vec<usize>> = vec![vec![0; buttons.len()]];
 
             for (joltages_i, current_joltage) in joltages.iter().enumerate() {
                 // invariant: possibilities contains all non-overflown options that satisfy [0;i)
                 // i.e. for each possibilities[i], if you press button x possibilities[i][x] times,
                 // all joltages 0 <= j < i will be on target
+                for cand in possibilities.iter() {
+                    let mut rs = vec![0; joltages.len()];
+                    for (btn, times) in cand.iter().enumerate() {
+                        for val in buttons[btn].iter() {
+                            rs[*val] += times;
+                        }
+                    }
+                    for jj in 0..joltages_i {
+                        assert!(rs[jj] == joltages[jj]);
+                    }
+                }
 
                 let mut affecting_btns = Vec::new();
                 for (btn_i, btn) in buttons.iter().enumerate() {
@@ -64,7 +79,7 @@ pub fn solve_10(part: usize, input: String) -> i64 {
                 );
                 possibilities = possibilities
                     .into_iter()
-                    .progress()
+                    //.progress()
                     .flat_map(|mut cand| {
                         let mut result = vec![0; joltages.len()];
                         for (btn, times) in cand.iter().enumerate() {
@@ -154,11 +169,15 @@ pub fn solve_10(part: usize, input: String) -> i64 {
                     })
                     .collect_vec();
             }
-            return possibilities
+            let res =  possibilities
                 .into_iter()
-                .map(|cand| cand.len() as i64)
+                .map(|cand| cand.iter().sum::<usize>())
                 .min()
-                .unwrap();
+                .unwrap() as i64;
+            println!("result -> {res}");
+            save_line_result_to_cache(i+1, res);
+            return res;
+            }
 
             let n = buttons.len();
             let mut result = vec![0; diagram.len()];
@@ -217,6 +236,7 @@ pub fn solve_10(part: usize, input: String) -> i64 {
 
             let result = possibilities[0].len() as i64;
             println!("Line {} done -> {result}", i + 1);
+            save_line_result_to_cache(i+1, result);
             result
         })
         .sum()

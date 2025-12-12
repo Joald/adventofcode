@@ -1,6 +1,14 @@
 use core::panic;
 use itertools::Itertools;
-use std::{collections::HashMap, marker::PhantomData};
+use serde_json::Value;
+use std::{collections::HashMap, marker::PhantomData, path::PathBuf};
+
+pub fn var_or(var: &str, or: &str) -> usize {
+    std::env::var(var)
+        .unwrap_or(or.to_string())
+        .parse::<usize>()
+        .unwrap()
+}
 
 pub fn is_example() -> bool {
     std::env::var("EXAMPLE").is_ok_and(|val| val == "1")
@@ -141,6 +149,7 @@ pub enum NeiDirs {
 pub fn neis(x: i64, y: i64, coords: &CoordsResult, nei_dirs: NeiDirs) -> Vec<(i64, i64, char)> {
     let mut result = Vec::new();
     let base_four = [(-1, 0), (1, 0), (0, -1), (0, 1)];
+
     let omni = [(-1, -1), (-1, 1), (1, -1), (1, 1)];
     let iter: Box<dyn Iterator<Item = (i64, i64)>> = match nei_dirs {
         NeiDirs::BaseFour => Box::new(base_four.into_iter()),
@@ -161,4 +170,73 @@ pub fn combine_digits(it: impl Iterator<Item = char>) -> Option<i64> {
     it.fold(None, |acc, ch| {
         Some(acc.unwrap_or(0) * 10 + (ch.to_digit(10).unwrap() as i64))
     })
+}
+
+fn get_cache_file() -> Option<PathBuf> {
+    let part = var_or("PART", "2");
+    let task_num = var_or("TASK_NUM", "1");
+
+    let pwd = std::env::current_dir()
+        .expect("current dir to be accessible")
+        .canonicalize()
+        .ok()?;
+    let mut year_dir = if pwd.file_name().unwrap() == "src" {
+        pwd.parent().expect("aoc source to not be in fs root")
+    } else {
+        &pwd
+    }
+    .to_owned();
+    if year_dir.parent().unwrap().file_name().unwrap().to_str() != Some("adventofcode") {
+        panic!("Not in a year dir, avoiding pollution of random files!");
+    }
+    year_dir.push("cache");
+    let mut cache_dir = year_dir;
+    std::fs::DirBuilder::new()
+        .recursive(true)
+        .create(&cache_dir)
+        .unwrap();
+    cache_dir.push(format!(
+        "cache_{task_num}_part{part}_{}.json",
+        if is_example() { "ex" } else { "real" }
+    ));
+    let cache_file = cache_dir;
+    Some(cache_file)
+}
+
+pub fn get_cached_line_result(line: usize) -> Option<i64> {
+    let cache_file = get_cache_file()?;
+    println!("Looking up cache @ {}", cache_file.display());
+    if !cache_file.exists() {
+        return None;
+    }
+    let contents = std::fs::read(cache_file).unwrap();
+    let cache = serde_json::from_slice(&contents).ok()?;
+    match cache {
+        Value::Object(m) => match m.get(&line.to_string())? {
+            Value::Number(val) => {
+                println!("Successfully found value {val} in cache");
+                val.as_i64()
+            }
+            _ => None,
+        },
+        _ => None,
+    }
+}
+
+pub fn save_line_result_to_cache(line: usize, val: i64) {
+    let cache_file = get_cache_file().unwrap();
+    println!(
+        "Caching result {val} for line {line} to {}",
+        cache_file.display()
+    );
+    if !cache_file.exists() {
+        std::fs::write(&cache_file, "{}").unwrap();
+    }
+    let contents = std::fs::read(&cache_file).unwrap();
+    let mut cache = serde_json::from_slice(&contents).unwrap();
+    if let Value::Object(ref mut m) = cache {
+        m.insert(line.to_string(), serde_json::json!(val));
+    }
+    std::fs::write(cache_file, serde_json::to_string(&cache).unwrap()).unwrap();
+    println!("Successfully written cache {cache}");
 }
