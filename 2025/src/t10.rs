@@ -1,5 +1,3 @@
-use indicatif::ProgressBar;
-
 #[allow(unused)]
 use crate::prelude::*;
 
@@ -38,6 +36,8 @@ pub fn solve_10(part: usize, input: String) -> i64 {
         .enumerate()
         .map(|(i, (diagram, buttons, joltages))| {
             assert!(diagram.len() == joltages.len());
+            println!("{}, {}", buttons.len(), joltages.len());
+            return 0;
             println!(
                 "Considering line {}: {:?} with {} buttons {buttons:?}",
                 i + 1,
@@ -46,6 +46,37 @@ pub fn solve_10(part: usize, input: String) -> i64 {
             );
             if let Some(cached_result) = get_cached_line_result(i + 1) {
                 return cached_result;
+            }
+            if var_or("GJ", "0") == 1 {
+                let n = joltages.len();
+                #[allow(non_snake_case)]
+                let mut A: Vec<Vec<f64>> = (0..n).map(|i| (0..buttons.len()).map(|bi| if buttons[bi].contains(&i) {1.} else {0.}).collect_vec()).collect_vec();
+                for i in 0..n {
+                    A[i].push(joltages[i] as f64);
+                }
+                for schodek in 0..n {
+                    // invariant: [0..schodek) are already triangular
+                    let to_swap = (schodek..n).find(|j| A[schodek][*j] != 0.).unwrap();
+                    A.swap(schodek, to_swap);
+                    let lead_val = A[schodek][schodek];
+                    for val in A[schodek].iter_mut() {
+                        *val /= lead_val;
+                    }
+                    for other_i in schodek+1..n {
+                        let lead_val = A[other_i][schodek];
+                        A[other_i][schodek] = 0.;
+                        for  other_j in schodek+1..A[other_i].len() {
+                            A[other_i][other_j] -= A[schodek][other_j] * lead_val;
+                        }
+                    }
+                }
+                for schodek in (0..n).rev() {
+                    // invariant: (schodek; n) is diagonalized
+                    // 
+
+                    
+                }
+                return A.into_iter().map(|row| *row.last().unwrap()).sum::<f64>() as i64
             }
 
             if var_or("PARTITIONS", "0") == 1 {
