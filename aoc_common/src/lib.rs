@@ -43,6 +43,17 @@ impl InputParser for Coords {
     }
 }
 
+pub struct Blocks {}
+impl InputParser for Blocks {
+    type Res = Vec<Vec<String>>;
+    fn parse(input: String) -> Self::Res {
+        input
+            .split("\n\n")
+            .map(|block| block.split("\n").map_into().collect_vec())
+            .collect_vec()
+    }
+}
+
 pub struct TwoBlocks<B1: InputParser, B2: InputParser> {
     marker1: PhantomData<B1>,
     marker2: PhantomData<B2>,

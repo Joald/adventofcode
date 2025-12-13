@@ -1,3 +1,5 @@
+use indicatif::ProgressBar;
+
 #[allow(unused)]
 use crate::prelude::*;
 
@@ -47,9 +49,11 @@ pub fn solve_10(part: usize, input: String) -> i64 {
             }
 
             if var_or("PARTITIONS", "0") == 1 {
-                let mut possibilities: Vec<Vec<usize>> = vec![vec![0; buttons.len()]];
+            let mut possibilities: Vec<Vec<usize>> = vec![vec![0; buttons.len()]];
+            let mut done_once = false;
 
-            for (joltages_i, current_joltage) in joltages.iter().enumerate() {
+            let mut considered_joltages = Vec::new();
+            for (joltages_i, current_joltage) in joltages.iter().enumerate().sorted_by_key(|(_, j)| buttons.iter().filter(|btn| btn.contains(j)).count() * 1000 + *j) {
                 // invariant: possibilities contains all non-overflown options that satisfy [0;i)
                 // i.e. for each possibilities[i], if you press button x possibilities[i][x] times,
                 // all joltages 0 <= j < i will be on target
@@ -60,10 +64,11 @@ pub fn solve_10(part: usize, input: String) -> i64 {
                             rs[*val] += times;
                         }
                     }
-                    for jj in 0..joltages_i {
-                        assert!(rs[jj] == joltages[jj]);
+                    for jj in considered_joltages.iter() {
+                        assert!(rs[*jj] == joltages[*jj]);
                     }
                 }
+                considered_joltages.push(joltages_i);
 
                 let mut affecting_btns = Vec::new();
                 for (btn_i, btn) in buttons.iter().enumerate() {
@@ -77,9 +82,12 @@ pub fn solve_10(part: usize, input: String) -> i64 {
                     "Considering joltage #{joltages_i} ({current_joltage}) with {} possibilities and affecting_btns={affecting_btns:?}",
                     possibilities.len()
                 );
+
                 possibilities = possibilities
                     .into_iter()
-                    //.progress()
+                    //.skip(10000)
+                    //.take(10000)
+                    .progress()
                     .flat_map(|mut cand| {
                         let mut result = vec![0; joltages.len()];
                         for (btn, times) in cand.iter().enumerate() {
@@ -175,7 +183,7 @@ pub fn solve_10(part: usize, input: String) -> i64 {
                 .min()
                 .unwrap() as i64;
             println!("result -> {res}");
-            save_line_result_to_cache(i+1, res);
+            //save_line_result_to_cache(i+1, res);
             return res;
             }
 
